@@ -13,18 +13,20 @@ void tick()
   timer_tick_count++;
 }
 
-/*!
- * TinyHAN receive handler.  Invoked when a packet is passed up to the
- * application.  Here, we simply turn the LED on or off depending on the
- * value of the first byte in the packet
- */
 static void rx_handler(const tinymac_node_t *node, uint8_t type, const char *buf, size_t size)
 {
-  if (type == tinymacType_RawData) 
-  {
-    Serial.print("R: ");
-    Serial.println(*((uint16_t*)buf));
-  }
+  INFO("<< uuid %llx\n", node->uuid);
+  INFO("<< rssi %d\n", node->rssi);
+}
+
+static void reg_handler(const tinymac_node_t *node)
+{
+  INFO("++ %x\n", node->uuid);
+}
+
+static void dereg_handler(const tinymac_node_t *node)
+{
+  INFO("-- %x\n", node->uuid);
 }
 
 void setup()
@@ -48,6 +50,8 @@ void setup()
 	phy_init();
 	tinymac_init(&params);
 	tinymac_register_recv_cb(rx_handler);
+  tinymac_register_reg_cb(reg_handler);
+  tinymac_register_dereg_cb(dereg_handler);
   tinymac_permit_attach(1);
 }
 

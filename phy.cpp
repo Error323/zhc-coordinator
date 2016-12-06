@@ -52,7 +52,7 @@
 /* Fixed for given receiver configuration */
 
 /*! Frequency of channel 0 (Hz) */
-#define CFG_FREQUENCY_F0			(868 * MHZ - 627000)
+#define CFG_FREQUENCY_F0			(868 * MHZ - 586000)
 /*! Channel spacing (kHz) */
 #define CFG_CHANNEL_STEP			10
 /*! Deviation (for (G)FSK) (Hz) */

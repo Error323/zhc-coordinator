@@ -40,18 +40,12 @@ static char __buf[__BSIZE];
 
 #define DUMP(buf, size)
 
-#define TRACE(...)
-//#define INFO(...)
-//#define ERROR(...)
-
-/*
 #define TRACE(...)                         \
   do {                                     \
     snprintf(__buf, __BSIZE, __VA_ARGS__); \
     Serial.print("T: ");                   \
     Serial.print(__buf);                   \
   } while (0)
-*/
 
 #define INFO(...)                          \
   do {                                     \
@@ -66,6 +60,17 @@ static char __buf[__BSIZE];
     Serial.print("E: ");                   \
     Serial.print(__buf);                   \
   } while (0)
+
+#define COMM(...)                          \
+  do {                                     \
+    snprintf(__buf, __BSIZE, __VA_ARGS__); \
+    Serial.print(">");                     \
+    Serial.print(__buf);                   \
+  } while (0)
+
+#define TRACE(...)
+//#define INFO(...)
+//#define ERROR(...)
 
 #define FUNCTION_TRACE
 
