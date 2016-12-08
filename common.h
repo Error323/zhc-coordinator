@@ -27,9 +27,7 @@
 #include <Arduino.h>
 #include <stdio.h>
 
-#define __BSIZE 256
 typedef unsigned int boolean_t;
-static char __buf[__BSIZE];
 
 #ifndef TRUE
 #define TRUE 1
@@ -39,14 +37,23 @@ static char __buf[__BSIZE];
 #endif
 
 #define DUMP(buf, size)
+#define __BSIZE 256
+static char __buf[__BSIZE];
 
+/*
 #define TRACE(...)                         \
   do {                                     \
     snprintf(__buf, __BSIZE, __VA_ARGS__); \
     Serial.print("T: ");                   \
     Serial.print(__buf);                   \
   } while (0)
-
+#define ERROR(...)                         \
+  do {                                     \
+    snprintf(__buf, __BSIZE, __VA_ARGS__); \
+    Serial.print("E: ");                   \
+    Serial.print(__buf);                   \
+  } while (0)
+*/
 #define INFO(...)                          \
   do {                                     \
     snprintf(__buf, __BSIZE, __VA_ARGS__); \
@@ -54,23 +61,10 @@ static char __buf[__BSIZE];
     Serial.print(__buf);                   \
   } while (0)
 
-#define ERROR(...)                         \
-  do {                                     \
-    snprintf(__buf, __BSIZE, __VA_ARGS__); \
-    Serial.print("E: ");                   \
-    Serial.print(__buf);                   \
-  } while (0)
-
-#define COMM(...)                          \
-  do {                                     \
-    snprintf(__buf, __BSIZE, __VA_ARGS__); \
-    Serial.print(">");                     \
-    Serial.print(__buf);                   \
-  } while (0)
 
 #define TRACE(...)
 //#define INFO(...)
-//#define ERROR(...)
+#define ERROR(...)
 
 #define FUNCTION_TRACE
 
