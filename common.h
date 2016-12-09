@@ -62,11 +62,16 @@ static char __buf[__BSIZE];
     Serial.print(__buf);                   \
   } while (0)
 
-#define SEND(...)                          \
-  do {                                     \
-    snprintf(__buf, __BSIZE, __VA_ARGS__); \
-    SerialUSB.print("S: ");                \
-    SerialUSB.print(__buf);                \
+#define SEND0(msg)                                \
+  do {                                            \
+    SerialUSB.write((char*)&msg, sizeof(msg));    \
+  } while (0)
+
+#define SEND(msg, buf)                            \
+  do {                                            \
+    SerialUSB.write((char*)&msg, sizeof(msg));    \
+    if (msg.size > 0)                             \
+      SerialUSB.write((char*)buf, msg.size);      \
   } while (0)
 
 #define TRACE(...)

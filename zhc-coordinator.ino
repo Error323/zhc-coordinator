@@ -9,42 +9,46 @@
 
 uint32_t timer_tick_count = 0;
 uint32_t next_mac_tick = 0;
+msg_t msg;
 
 void tick()
 {
   timer_tick_count++;
 }
 
+
 static void rx_handler(const tinymac_node_t *node, uint8_t type, const char *buf, size_t size)
 {
   // Make sure we are the smartmeter node
   if (node->uuid >> 63)
   {
-    INFO("Received telegram (%d)\n", size);
-    telegram_t *t = (telegram_t*) buf;
-    SEND("%0.3f %0.3f %0.3f %0.3f %0.3f %0.3f %0.3f %d (%d)\n", 
-      t->total_kwh_used_high, 
-      t->total_kwh_used_low, 
-      t->total_kwh_returned_high, 
-      t->total_kwh_returned_low,
-      t->total_gas_used,
-      t->current_used_kwh,
-      t->current_returned_kwh,
-      t->current_tariff_kwh,
-      timer_tick_count/4
-    );
+    msg.size = size;
+    msg.uuid = node->uuid;
+    msg.type = ZHC_INFO;
+    SEND(msg, buf);
   }
 }
 
+
 static void reg_handler(const tinymac_node_t *node)
 {
-  INFO("Reg %llx\n", node->uuid);
+  SETP(LED);
+  msg.size = 0;
+  msg.uuid = node->uuid;
+  msg.type = ZHC_REG;
+  SEND0(msg);
 }
+
 
 static void dereg_handler(const tinymac_node_t *node)
 {
-  INFO("DeReg %llx\n", node->uuid);
+  CLEARP(LED);
+  msg.size = 0;
+  msg.uuid = node->uuid;
+  msg.type = ZHC_DEREG;
+  SEND0(msg);
 }
+
 
 void setup()
 {
@@ -53,7 +57,8 @@ void setup()
   pinMode(TRX_SDN, OUTPUT);
   pinMode(nTRX_IRQ, INPUT);
   pinMode(LED, OUTPUT);
-  
+
+  msg.magic = MAGIC;
 	tinymac_params_t params;
   params.uuid = 0x7a6863ull; // zhc in hex
   params.coordinator = 1;
@@ -74,6 +79,7 @@ void setup()
   tinymac_permit_attach(1);
 }
 
+
 void loop()
 {
   uint32_t now = timer_tick_count;
@@ -82,10 +88,6 @@ void loop()
   {
     next_mac_tick = now + 1;
     tinymac_tick_handler(NULL);
-    if (INP(LED))
-      CLEARP(LED);
-    else
-      SETP(LED);
   }
 
   phy_event_handler();
