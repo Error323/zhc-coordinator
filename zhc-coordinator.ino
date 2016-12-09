@@ -22,7 +22,7 @@ static void rx_handler(const tinymac_node_t *node, uint8_t type, const char *buf
   {
     INFO("Received telegram (%d)\n", size);
     telegram_t *t = (telegram_t*) buf;
-    INFO("%0.3f %0.3f %0.3f %0.3f %0.3f %0.3f %0.3f %d\n", 
+    SEND("%0.3f %0.3f %0.3f %0.3f %0.3f %0.3f %0.3f %d (%d)\n", 
       t->total_kwh_used_high, 
       t->total_kwh_used_low, 
       t->total_kwh_returned_high, 
@@ -30,7 +30,8 @@ static void rx_handler(const tinymac_node_t *node, uint8_t type, const char *buf
       t->total_gas_used,
       t->current_used_kwh,
       t->current_returned_kwh,
-      t->current_tariff_kwh
+      t->current_tariff_kwh,
+      timer_tick_count/4
     );
   }
 }
@@ -48,6 +49,7 @@ static void dereg_handler(const tinymac_node_t *node)
 void setup()
 {
   Serial.begin(115200);
+  SerialUSB.begin(115200);
   pinMode(TRX_SDN, OUTPUT);
   pinMode(nTRX_IRQ, INPUT);
   pinMode(LED, OUTPUT);

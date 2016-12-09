@@ -54,6 +54,7 @@ static char __buf[__BSIZE];
     Serial.print(__buf);                   \
   } while (0)
 */
+
 #define INFO(...)                          \
   do {                                     \
     snprintf(__buf, __BSIZE, __VA_ARGS__); \
@@ -61,10 +62,17 @@ static char __buf[__BSIZE];
     Serial.print(__buf);                   \
   } while (0)
 
+#define SEND(...)                          \
+  do {                                     \
+    snprintf(__buf, __BSIZE, __VA_ARGS__); \
+    SerialUSB.print("S: ");                \
+    SerialUSB.print(__buf);                \
+  } while (0)
 
 #define TRACE(...)
 //#define INFO(...)
 #define ERROR(...)
+//#define SEND(...)
 
 #define FUNCTION_TRACE
 
