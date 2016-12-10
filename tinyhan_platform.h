@@ -39,16 +39,16 @@
 /********************************/
 
 /*! Port definition for SPI select pin */
-#define nSELECT			nTRX_SEL
+#define nSELECT nTRX_SEL
 /*! Port definition for interrupt pin */
-#define nIRQ			nTRX_IRQ
+#define nIRQ nTRX_IRQ
 
 /***********************************/
 /* PLATFORM SPECIFIC CONFIGURATION */
 /***********************************/
 
 /*! Delay for specified number of ms */
-#define DELAY_MS(a)		delay(a)
+#define DELAY_MS(a) delay(a)
 
 /*! Wait for a transceiver interrupt (may be empty for
  * platforms which rely on polling)
@@ -59,7 +59,7 @@
 #define TABLE
 
 /*! Access macro for tables stored in ROM */
-#define TABLE_READ(a)	(*a)
+#define TABLE_READ(a) (*a)
 
 /*******************/
 /* Platform extras */
@@ -79,25 +79,25 @@
 /*******/
 
 /*! Function to assert SPI select */
-#define SELECT()                                                   \
-do {                                                               \
-  SPI.beginTransaction(SPISettings(2000000, MSBFIRST, SPI_MODE0)); \
-} while (0)
+#define SELECT()                                                               \
+  do                                                                           \
+  {                                                                            \
+    SPI.beginTransaction(SPISettings(2000000, MSBFIRST, SPI_MODE0));           \
+  } while (0)
 
 /*! Function to release SPI select */
-#define DESELECT()            \
-do {                          \
-  SPI.transfer(nSELECT, 0x0); \
-  SPI.endTransaction();       \
-} while (0)
-  
+#define DESELECT()                                                             \
+  do                                                                           \
+  {                                                                            \
+    SPI.transfer(nSELECT, 0x0);                                                \
+    SPI.endTransaction();                                                      \
+  } while (0)
 
 /*! Initialise SPI device */
-#define SPI_INIT()	SPI.begin(nSELECT)
-
+#define SPI_INIT() SPI.begin(nSELECT)
 
 /*! Perform single byte transfer on SPI device */
-#define SPI_IO(a)		spi_io(a)
+#define SPI_IO(a) spi_io(a)
 
 static inline uint8_t spi_io(uint8_t data)
 {
@@ -109,9 +109,9 @@ static inline uint8_t spi_io(uint8_t data)
 /********************/
 
 /*! Function to enter shutdown */
-#define POWER_DOWN()	SETP(TRX_SDN)
+#define POWER_DOWN() SETP(TRX_SDN)
 
 /*! Function to release shutdown */
-#define POWER_UP()		CLEARP(TRX_SDN)
+#define POWER_UP() CLEARP(TRX_SDN)
 
 #endif /* TINYHAN_PLATFORM_H_ */

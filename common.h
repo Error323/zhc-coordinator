@@ -55,23 +55,26 @@ static char __buf[__BSIZE];
   } while (0)
 */
 
-#define INFO(...)                          \
-  do {                                     \
-    snprintf(__buf, __BSIZE, __VA_ARGS__); \
-    Serial.print("I: ");                   \
-    Serial.print(__buf);                   \
+#define INFO(...)                                                              \
+  do                                                                           \
+  {                                                                            \
+    snprintf(__buf, __BSIZE, __VA_ARGS__);                                     \
+    Serial.print("I: ");                                                       \
+    Serial.print(__buf);                                                       \
   } while (0)
 
-#define SEND0(msg)                                \
-  do {                                            \
-    SerialUSB.write((char*)&msg, sizeof(msg));    \
+#define SEND0(msg)                                                             \
+  do                                                                           \
+  {                                                                            \
+    SerialUSB.write((char *)&msg, sizeof(msg));                                \
   } while (0)
 
-#define SEND(msg, buf)                            \
-  do {                                            \
-    SerialUSB.write((char*)&msg, sizeof(msg));    \
-    if (msg.size > 0)                             \
-      SerialUSB.write((char*)buf, msg.size);      \
+#define SEND(msg, buf)                                                         \
+  do                                                                           \
+  {                                                                            \
+    SerialUSB.write((char *)&msg, sizeof(msg));                                \
+    if (msg.size > 0)                                                          \
+      SerialUSB.write((char *)buf, msg.size);                                  \
   } while (0)
 
 #define TRACE(...)
@@ -81,7 +84,7 @@ static char __buf[__BSIZE];
 
 #define FUNCTION_TRACE
 
-#define PACKED			__attribute__((packed))
-#define ARRAY_SIZE(a)	(sizeof(a) / sizeof(a[0]))
+#define PACKED __attribute__((packed))
+#define ARRAY_SIZE(a) (sizeof(a) / sizeof(a[0]))
 
 #endif /* COMMON_H_ */

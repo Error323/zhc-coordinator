@@ -27,22 +27,22 @@
 #define BOARD_H_
 
 /* Pin definitions */
-#define TRX_SDN					7
-#define nTRX_SEL				10
+#define TRX_SDN 7
+#define nTRX_SEL 10
 
-#define nTRX_IRQ			  6
-#define LED						  LED_BUILTIN
+#define nTRX_IRQ 6
+#define LED LED_BUILTIN
 
 /*! Return the current value of the named IO port */
-#define INP(id)					digitalRead(id)
+#define INP(id) digitalRead(id)
 /*! Sets the named IO port to the specified value */
-#define OUTP(id,val)		digitalWrite(id, val)
+#define OUTP(id, val) digitalWrite(id, val)
 /*! Turns on the named IO port */
-#define SETP(id)				digitalWrite(id, HIGH)
+#define SETP(id) digitalWrite(id, HIGH)
 /*! Turns off the named IO port */
-#define CLEARP(id)			digitalWrite(id, LOW)
+#define CLEARP(id) digitalWrite(id, LOW)
 
-#define TRX_OFF()				SETP(TRX_SDN)
-#define TRX_ON()				CLEARP(TRX_SDN)
+#define TRX_OFF() SETP(TRX_SDN)
+#define TRX_ON() CLEARP(TRX_SDN)
 
 #endif /*BOARD_H_*/

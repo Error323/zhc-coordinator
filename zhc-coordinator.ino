@@ -11,13 +11,10 @@ uint32_t timer_tick_count = 0;
 uint32_t next_mac_tick = 0;
 msg_t msg;
 
-void tick()
-{
-  timer_tick_count++;
-}
+void tick() { timer_tick_count++; }
 
-
-static void rx_handler(const tinymac_node_t *node, uint8_t type, const char *buf, size_t size)
+static void rx_handler(const tinymac_node_t *node, uint8_t type,
+                       const char *buf, size_t size)
 {
   // Make sure we are the smartmeter node
   if (node->uuid >> 63)
@@ -29,7 +26,6 @@ static void rx_handler(const tinymac_node_t *node, uint8_t type, const char *buf
   }
 }
 
-
 static void reg_handler(const tinymac_node_t *node)
 {
   SETP(LED);
@@ -38,7 +34,6 @@ static void reg_handler(const tinymac_node_t *node)
   msg.type = ZHC_REG;
   SEND0(msg);
 }
-
 
 static void dereg_handler(const tinymac_node_t *node)
 {
@@ -49,7 +44,6 @@ static void dereg_handler(const tinymac_node_t *node)
   SEND0(msg);
 }
 
-
 void setup()
 {
   Serial.begin(115200);
@@ -59,7 +53,7 @@ void setup()
   pinMode(LED, OUTPUT);
 
   msg.magic = MAGIC;
-	tinymac_params_t params;
+  tinymac_params_t params;
   params.uuid = 0x7a6863ull; // zhc in hex
   params.coordinator = 1;
   params.flags = 0;
@@ -69,22 +63,21 @@ void setup()
   Timer1.attachInterrupt(tick);
   Timer1.start(250000); // Calls every 250 ms
 
-	TRX_ON();
+  TRX_ON();
 
-	phy_init();
-	tinymac_init(&params);
-	tinymac_register_recv_cb(rx_handler);
+  phy_init();
+  tinymac_init(&params);
+  tinymac_register_recv_cb(rx_handler);
   tinymac_register_reg_cb(reg_handler);
   tinymac_register_dereg_cb(dereg_handler);
   tinymac_permit_attach(1);
 }
 
-
 void loop()
 {
   uint32_t now = timer_tick_count;
 
-  if ((int32_t)(now - next_mac_tick) >= 0) 
+  if ((int32_t)(now - next_mac_tick) >= 0)
   {
     next_mac_tick = now + 1;
     tinymac_tick_handler(NULL);
